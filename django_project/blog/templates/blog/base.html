@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    {% if title %}
+        <title>Blog App - {{title}}</title>
+    {% else %}
+        <title>Blog App</title>
+    {% endif %}
+</head>
+<body class="indigo lighten-4"> 
+    <div class="navbar-fixed">
+        <nav class="navbar-wrapper indigo darken-3">
+            <div class="container">
+                <a href="{% url 'blog-home' %}" class="brand-logo">BlogApp</a>
+                <a href="#" class="sidenav-trigger" data-target="mobile-links">
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{% url 'blog-home' %}">Home</a></li>
+                    <li><a href="{% url 'blog-about' %}">About</a></li>
+                    <li><a href="{% url 'post-create' %}" class="white-text">Create Post</a></li>
+                    {% if user.is_authenticated %}
+                        
+                        <li><a href="{% url 'profile' %}" class="btn-floating waves-effect"><img src="{{ user.profile.image.url }}" alt="" class="responsive-img"></a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'register' %}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <ul class="sidenav indigo darken-3" id="mobile-links">
+        {% if user.is_authenticated %}
+            <li>
+                <div class="user-view">
+                    <div class="background">
+                    <img src="/media/background-tech.jpeg">
+                    </div>
+                    <a href="{% url 'profile' %}"><img class="circle" src="{{ user.profile.image.url }}"></a>
+                    <a href="{% url 'profile' %}"><span class="white-text name">{{ user.username }}</span></a>
+                    <a href="{% url 'profile' %}"><span class="white-text email">{{ user.email }}</span></a>
+                </div>
+            </li>
+        {% endif %}
+            <li><a href="{% url 'blog-home' %}" class="white-text">Home</a></li>
+            <li><a href="{% url 'blog-about' %}" class="white-text">About</a></li>
+            <li><a href="{% url 'post-create' %}" class="white-text">Create Post</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="white-text">Profile</a></li>
+            <li><a href="{% url 'logout' %}" class="white-text"> Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}" class="white-text">Login</a></li>
+            <li><a href="{% url 'register' %}" class="white-text">Sign Up</a></li>
+        {% endif %}
+        
+    </ul>
+    
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="indigo white-text">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock content %}
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.sidenav').sidenav();
+        })
+    </script>
+
+</body>
+</html>

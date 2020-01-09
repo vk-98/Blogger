@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% if posts %}
+        <h1 class="indigo-text text-darken-3">Blog Posts</h1>
+        <div class="row">
+            {% for post in posts %}
+                <ul class="collection">
+                    <li class="collection-item avatar">
+                        <img src="{{ post.author.profile.image.url }}" alt="" class="circle">
+                        <span class="title"><a href="{% url 'post-detail'  post.id %}">{{post.title}}</a></span>
+                        <p>By {{post.author}} on {{post.date_posted|date:'F d, Y'}}</p>
+                        <p class="truncate">{{post.content}}</p>                        
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="blue-text text-lighten-2">No Blog Posts Available</h1>
+    {% endif %}
+
+    {% if is_paginated %}
+        <ul class="pagination ">
+            {% if page_obj.has_previous %}
+                    <li class="wave-effect"><a href="?page=1">First</a></li>
+                    <li class="wave-effect"><a href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="wave-effect"><a href="?page={{page_obj.number}}">{{num}}</a></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'+3' %}
+                    <li class="wave-effect"><a href="?page={{num}}">{{num}}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="wave-effect"><a href="?page={{page_obj.next_page_number}}">Next</a></li>
+                <li class="wave-effect"><a href="?page={{page_obj.pagintor.num_pages}}">Last</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+
+{% endblock content %}

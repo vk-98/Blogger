@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <ul class="collection">
+        <li class="collection-item avatar indigo-text text-darken-3">
+            <img src="{{ user.profile.image.url }}" alt="" class="circle">
+            <span class="title">Username - {{ user.username }}</span>
+            <p>Email - {{ user.email }}
+                <br>
+                Name - {{ user.first_name }} {{ user.last_name }}
+            </p>
+        </li>
+    </ul>
+    <form method="POST" enctype="multipart/form-data">
+        <h1 class="indigo-text text-darken-3 centre">Profile Info</h1>
+        {% csrf_token %}
+        {{ u_form|crispy }}
+        {{ p_form|crispy }}
+        <br>
+        <br>
+        <button type="submit" class="btn btn-submit indigo darken-3">Update</button>
+    </form>
+{% endblock content %} 
